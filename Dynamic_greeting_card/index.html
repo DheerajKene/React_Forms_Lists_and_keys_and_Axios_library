@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Greeting card</title>
+    <style>
+        .MainDiv{
+            width: 100%;
+            top: 0;
+            left: 0;
+            text-align: center;
+
+        }
+        .Card{
+            width: 40%;
+            height:450px;
+            border-radius: 10px;
+            background-color: rgb(229, 88, 185);
+            margin-bottom: 10px;
+            padding: 30px;
+           
+        }
+        .greet{
+            font-family: Candara;
+            font-size: 60px;
+            font-weight: bolder;
+            font-style: italic;
+            color: teal;
+        }
+        .name{
+            font-family: Candara;
+            font-size: 80px;
+            font-weight: bolder;
+            font-style: italic;
+            color: teal;
+        }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    // Your  code will go here
+
+    //function GreetingCard helps to show the data(Card) into the UI.
+    function GreetingCard({greeting, name}){
+        return(
+            //className is given to the div and heading tags here to design the card.
+            <div className="MainDiv">
+                <div className="Card">
+                    <h3 className="greet">{greeting}</h3>
+                    <h1 className="name">{name}</h1>
+                </div>
+            </div>
+        );
+    }
+
+ //function App() is a parent function wherein a array of objects of name and greetings are define.   
+
+    function App(){
+        let GreetingCards = [
+            {
+                name:"Dheeraj",
+                greeting:"Happy Birthday..."
+            },
+            {
+                name:"Meera",
+                greeting:"Happy Birthday..."
+            },
+            {
+                name:"Sanket",
+                greeting:"Happy Birthday..."
+            },
+            {
+                name:"Himani",
+                greeting:"Happy Birthday..."
+            },
+            {
+                name:"Nikita",
+                greeting:"Happy Birthday..."
+            },
+            {
+                name:"Adhiraj",
+                greeting:"Happy Birthday..."
+            }
+        ]
+        //here we used map here to extract data from the array and pass that data as an argument to the child componant Greetingcard()
+        return(
+            <>
+                {GreetingCards.map((el,i)=>
+                    <GreetingCard key={i} greeting={el.greeting} name={el.name}/>//child componant GreetingCard invoke here.
+
+                )}
+            </>
+
+        );
+    }
+    ReactDOM.createRoot(document.getElementById("root")).render(<App/>)//rendering the main App() componant here.
+
+    
+  </script>
+</html>
