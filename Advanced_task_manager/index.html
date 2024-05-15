@@ -17,16 +17,19 @@
     // Your  code will go here
     function TaskManager(){
 
-        const[InputData, setInputData] = React.useState("");
-        const[data, setData] = React.useState([]);
+        const[InputData, setInputData] = React.useState("");//useState used for store the input data
+        const[data, setData] = React.useState([]);// useState use to store the data from the db.json file
 
+//Function getData() helps to get data from the db.json file----------------------        
         function getData(){
           axios.get("http://localhost:3000/todos")
           .then((res)=> setData(res.data))
           .catch((err)=> console.log(err))
         }
 
-        getData();
+        getData();//invoking getData function.
+
+//function HandleSpanChange() helps to change the status dyanamically by clicking on it.        
 
         function HandleSpanChange(el,i){
           console.log(el);
@@ -35,18 +38,23 @@
           .catch(()=>console.log("Failed to update"))
         }
 
+//function HandleChange() helps to get the data from the user        
+
         function HandleChange(e){
             e.preventDefault();
             setInputData(e.target.value);
         }
 
+//function handleAddTask() helps to catch the data entered by the user        
+
         function handleAddTask(){
-            let task = {title:InputData, status:true}
-            console.log(task)
-            axios.post("http://localhost:3000/todos", task)
+            let task = {title:InputData, status:true} //input data and status is stored in the task to post the data to db.json file by using axios.
+            axios.post("http://localhost:3000/todos", task) //Axios with post method for saving the data into the db.json file.
             .then(()=>console.log("task added"))
             .catch(()=> console.log("failed to add task"))
         }
+
+//function Handledelete() helps to delete the specific(specified by unique Id) data from the file by delete method in axios.        
 
         function HandleDelete(el,i){
           axios.delete(`http://localhost:3000/todos/${el.id}`)
@@ -64,7 +72,7 @@
                             value={InputData}
                         />
 
-                        <button onClick={handleAddTask}>Add Task</button>
+                        <button onClick={handleAddTask}>Add Task</button> 
                     </div>    
                   </div>
                   <div>
@@ -77,6 +85,7 @@
                   </div>
                   
               </>
+              
                 
             )
         
