@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced Task Manager</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script type="text/babel">
+
+    // Your  code will go here
+    function TaskManager(){
+
+        const[InputData, setInputData] = React.useState("");
+        const[data, setData] = React.useState([]);
+
+        function getData(){
+          axios.get("http://localhost:3000/todos")
+          .then((res)=> setData(res.data))
+          .catch((err)=> console.log(err))
+        }
+
+        getData();
+
+        function HandleSpanChange(el,i){
+          console.log(el);
+          axios.patch(`http://localhost:3000/todos/${el.id}`,{...el, status: !el.status})
+          .then(()=>console.log("Status Updated"))
+          .catch(()=>console.log("Failed to update"))
+        }
+
+        function HandleChange(e){
+            e.preventDefault();
+            setInputData(e.target.value);
+        }
+
+        function handleAddTask(){
+            let task = {title:InputData, status:true}
+            console.log(task)
+            axios.post("http://localhost:3000/todos", task)
+            .then(()=>console.log("task added"))
+            .catch(()=> console.log("failed to add task"))
+        }
+
+        function HandleDelete(el,i){
+          axios.delete(`http://localhost:3000/todos/${el.id}`)
+          .then(()=>console.log("Deleted"))
+          .catch(()=>console.log("Failed to delete"))
+        }
+            return(
+              <>
+                  <div>
+                    <div>
+                        <input 
+                            type="text" 
+                            placeholder="Enter Task here"
+                            onChange={HandleChange}
+                            value={InputData}
+                        />
+
+                        <button onClick={handleAddTask}>Add Task</button>
+                    </div>    
+                  </div>
+                  <div>
+                    <ul>
+                        {data.map((el,i)=>
+                          <li key={i}>{el.title} <span onClick={()=> HandleSpanChange(el,i)}> Status:- {el.status ? "Completed" : "pending"}</span>
+                            {"   "}<button onClick={()=> HandleDelete(el,i)}>Delete</button></li>
+                        )}
+                    </ul>  
+                  </div>
+                  
+              </>
+                
+            )
+        
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<TaskManager/>)
+  </script>
+</html>
